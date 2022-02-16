@@ -29,7 +29,7 @@ public class GameEngine : MonoBehaviour
 
 	public static Vector3 WorldToCell(Vector3 iPosition)
 	{
-		return sGrid.WorldToCell(iPosition);
+		return sGrid.CellToWorld(sGrid.WorldToCell(iPosition));
 	}
 
 	public static Interactable CheckForInteractables(Vector3 iPosition)
