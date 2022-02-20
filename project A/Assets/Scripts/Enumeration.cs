@@ -11,7 +11,9 @@ public class Enumeration
 	public static LayerMask INTERACTABLE_MASK = LayerMask.GetMask(new string[] { "Interactable", });
 	public static LayerMask GROUND_MASK = LayerMask.GetMask(new string[] { "Terrain", });
 	public static float sSelectionRadius = .5f;
-
+	public static float sPieceDragSpeed = 10f;
+	public static Vector3 sHexDifX = new Vector3(.5f, 0, 0);
+	public static Vector3 sHexDifZ = new Vector3(0, 0, .745f);
 
 
 	public static unsafe int BoolToInt(bool iBool)

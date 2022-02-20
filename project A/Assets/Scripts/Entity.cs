@@ -72,14 +72,14 @@ public class Entity : MonoBehaviour, Interactable
 	{
 		if (mBeingMoved)
 		{
-			mPosition = Vector3.MoveTowards(mPosition, mProjectedPosition, Time.fixedDeltaTime * Mathf.Max(Vector3.Distance(mPosition, mProjectedPosition), 4f));
+			mPosition = Vector3.MoveTowards(mPosition, mProjectedPosition, Time.fixedDeltaTime * Mathf.Max(Vector3.Distance(mPosition, mProjectedPosition), Enumeration.sPieceDragSpeed));
 			Debug.Log(mPosition + " moving toward " + mProjectedPosition);
 		}
 	}
 
 	IEnumerator FinishMovement()
 	{
-		while (Vector3.Distance(mPosition, mProjectedPosition) >= Time.fixedDeltaTime * 4f)
+		while (Vector3.Distance(mPosition, mProjectedPosition) >= Time.fixedDeltaTime * Enumeration.sPieceDragSpeed)
 		{
 			yield return new WaitForFixedUpdate();
 		}
