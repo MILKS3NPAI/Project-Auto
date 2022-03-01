@@ -1,17 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class ButtonClick : MonoBehaviour
 {
-    //public Event ev = new Event();
+    // using https://youtu.be/EfSImxUqmO0 
+    public UnityEvent unityEvent = new UnityEvent();
+    public GameObject button;
+    private void Start()
+    {
+        button = gameObject;
+    }
     void Update()
     {
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
         if (Mouse.current.leftButton.isPressed)
         {
+            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
+            {
+                print(name + ": Hit");
+                unityEvent.Invoke();
+            }
+        }
+        /*if (Mouse.current.leftButton.isPressed)
+        {
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
+            RaycastHit hit;*/
             /*if (Physics.Raycast(ray, out hit))
             {
                 Debug.DrawRay(Vector3.zero, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
@@ -22,7 +39,7 @@ public class ButtonClick : MonoBehaviour
                     print("WORLD");
                 }
             }*/
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity))
+            /*if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity))
             {
                 print(Mouse.current.position.ReadValue());
                 //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * Mathf.Infinity, Color.yellow);
@@ -31,6 +48,6 @@ public class ButtonClick : MonoBehaviour
                 Debug.DrawRay(Mouse.current.position.ReadValue(), transform.position, Color.blue, int.MaxValue);
                 print(hit.collider.gameObject);
             }
-        }
+        }*/
     }
 }
