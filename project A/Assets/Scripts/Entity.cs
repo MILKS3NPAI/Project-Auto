@@ -11,7 +11,8 @@ public class Entity : MonoBehaviour, Interactable
 	public Rigidbody mBody { get; protected set; }
 	bool gravity = false;
 
-	protected virtual void Awake() {
+	protected virtual void Awake()
+	{
 		mBody = GetComponent<Rigidbody>();
 		gravity = mBody.useGravity;
 	}

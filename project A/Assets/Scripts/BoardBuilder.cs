@@ -8,9 +8,10 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class BoardBuilder : MonoBehaviour
 {
-	public bool rebuildBoard = false;
-	public GameObject tilePrefab;
-	public Vector2Int boardSize = new Vector2Int();
+	[SerializeField] bool rebuildBoard = false;
+	[SerializeField] GameObject tilePrefab;
+	[SerializeField] Vector2Int boardSize = new Vector2Int();
+	public Vector2Int mBoardSize { get { return boardSize; } protected set { boardSize = value; } }
 
 	public void OnGUI()
 	{
