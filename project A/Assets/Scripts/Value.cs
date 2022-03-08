@@ -121,7 +121,9 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public void OverflowMinus(T iAmount)
 	{
-
+		dynamic lDifference = (dynamic)iAmount - (dynamic)bonusValue;
+		bonusValue -= Mathf.Min((dynamic)bonusValue, lDifference);
+		baseValue -= Mathf.Max(0, iAmount - lDifference);
 	}
 
 	private static void SetNoBounds(Value<T> iSource, T iValue)
