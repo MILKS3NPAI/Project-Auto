@@ -12862,8 +12862,9 @@ GameObject:
   - component: {fileID: 1375709330}
   - component: {fileID: 1375709329}
   - component: {fileID: 1375709328}
+  - component: {fileID: 1375709331}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Test Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12932,8 +12933,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 415512379}
-        m_TargetAssemblyTypeName: ButtonAction, Assembly-CSharp
+      - m_Target: {fileID: 1375709331}
+        m_TargetAssemblyTypeName: ButtonClick, Assembly-CSharp
         m_MethodName: ButtonMethod
         m_Mode: 1
         m_Arguments:
@@ -12982,6 +12983,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375709326}
   m_CullTransparentMesh: 0
+--- !u!114 &1375709331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375709326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd2eb83ca9d9463479f3ce4b40fab2bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  button: {fileID: 0}
 --- !u!1001 &1378305603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16639,7 +16656,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Button
+  m_Text: Test
 --- !u!222 &1843828500
 CanvasRenderer:
   m_ObjectHideFlags: 0

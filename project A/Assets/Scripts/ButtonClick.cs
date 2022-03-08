@@ -50,4 +50,8 @@ public class ButtonClick : MonoBehaviour
             }
         }*/
     }
+    public void ButtonMethod()
+    {
+        print(name + ": I was clicked");
+    }
 }
