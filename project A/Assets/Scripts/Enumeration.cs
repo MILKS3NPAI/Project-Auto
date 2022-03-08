@@ -51,3 +51,5 @@ public class Enumeration
 		return Enum.GetValues(typeof(T)).Length;
 	}
 }
+
+public enum Stat { HP, HP_MAX, MOVE_SPEED, MANA_MAX, MANA, PHYSICAL_ATTACK, MAGIC_ATTACK, ARMOR, MAGIC_RESIST, RANGE }
