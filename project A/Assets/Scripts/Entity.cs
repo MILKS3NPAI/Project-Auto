@@ -78,7 +78,7 @@ public class Entity : MonoBehaviour, Interactable
 
 	protected virtual void FixedUpdate()
 	{
-		DragMove();	
+		gameStateActions[(int)GameEngine.sState]();
 	}
 
 	public void DragMove()
@@ -100,7 +100,9 @@ public class Entity : MonoBehaviour, Interactable
 		mBody.useGravity = gravity;
 	}
 
-	void DoPlanningState() { }
+	void DoPlanningState() {
+		DragMove();
+	}
 
 	void DoBattlingState(){
 		stateActions[(int)mState]();

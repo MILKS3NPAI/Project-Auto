@@ -9,6 +9,7 @@ public class GameEngine : MonoBehaviour
 	private static bool initialized = false;
 	public static GameEngine sEngine { get; private set; }
 	public static Grid sGrid { get; private set; }
+	public static GameState sState { get; set; }
 
 	void Awake()
 	{

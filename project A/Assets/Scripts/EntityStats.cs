@@ -26,6 +26,24 @@ public class EntityStats
 	public float mAttackSpeed { get { return entityFloatStats[(int)FloatStat.ATTACK_SPEED].mValue; } set { entityFloatStats[(int)FloatStat.ATTACK_SPEED].mBaseValue = value; } }
 	public float mHP_REGEN { get { return entityFloatStats[(int)FloatStat.HP_REGEN].mValue; } set { entityFloatStats[(int)FloatStat.HP_REGEN].mBaseValue = value; } }
 	public float mMANA_REGEN { get { return entityFloatStats[(int)FloatStat.MANA_REGEN].mValue; } set { entityFloatStats[(int)FloatStat.MANA_REGEN].mBaseValue = value; } }
+	public delegate void IntValueChangeListener(Value<int> iPrevious, Value<int> iNew);
+	public delegate void FloatValueChangeListener(Value<float> iPrevious, Value<float> iNew);
+	public delegate void IntChangeListener(int iPrevious, int iNew);
+	public delegate void FloatChangeListener(float iPrevious, float iNew);
+	public IntValueChangeListener intValueChanged;
+
+	public void DeregisterCallback(IntStat iStat, IntValueChangeListener iCallback)
+	{
+		intValueChanged -= iCallback;
+	}
+
+	public void RegisterCallback(IntStat iStat, IntValueChangeListener iCallback){
+		intValueChanged += iCallback;
+	}
+
+	public void RegisterCallback(FloatStat iStat, FloatValueChangeListener iCallback)
+	{
+	}
 
 	public EntityStats()
 	{
