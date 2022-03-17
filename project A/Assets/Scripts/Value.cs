@@ -30,8 +30,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 	public T mBase { get { return (dynamic)baseValue * percentBase; } }
 	public T mBonus { get { return (dynamic)bonusValue * percentBonus; } }
 	public T mValue { get { return ((dynamic)mBase + (dynamic)mBonus) * percentTotal; } }
-	public delegate void ValueChangedListener();
-	public ValueChangedListener onValueChanged;
 
 	public Value()
 	{
@@ -72,7 +70,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public static Value<T> operator +(Value<T> iLeft, Value<T> iRight)
 	{
-		if ((dynamic)iRight.mValue == 0) { return iLeft; }
 		Value<T> lReturn = new Value<T>(iLeft);
 		lReturn.upperBound += (dynamic)(iRight.upperBound);
 		lReturn.lowerBound += (dynamic)(iRight.lowerBound);
@@ -86,7 +83,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public static Value<T> operator -(Value<T> iLeft, Value<T> iRight)
 	{
-		if ((dynamic)iRight.mValue == 0) { return iLeft; }
 		Value<T> lReturn = new Value<T>(iLeft);
 		lReturn.upperBound -= (dynamic)(iRight.upperBound);
 		lReturn.lowerBound -= (dynamic)(iRight.lowerBound);
@@ -100,7 +96,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public static Value<T> operator +(Value<T> iValue, T iAmount)
 	{
-		if ((dynamic)iAmount == 0) { return iValue; }
 		Value<T> lReturn = new Value<T>(iValue);
 		lReturn.mBaseValue += (dynamic)iAmount;
 		return lReturn;
@@ -108,7 +103,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public static Value<T> operator -(Value<T> iValue, T iAmount)
 	{
-		if ((dynamic)iAmount == 0) { return iValue; }
 		Value<T> lReturn = new Value<T>(iValue);
 		lReturn.mBaseValue -= (dynamic)iAmount;
 		return lReturn;
@@ -116,7 +110,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public void OverflowAdd(T iAmount)
 	{
-		if ((dynamic)iAmount == 0) { return; }
 		if (_boundUpper == 0)
 		{
 			baseValue += (dynamic)iAmount;
@@ -129,7 +122,6 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 
 	public void OverflowMinus(T iAmount)
 	{
-		if ((dynamic)iAmount == 0) { return; }
 		dynamic lDifference = (dynamic)iAmount - (dynamic)bonusValue;
 		bonusValue -= Mathf.Min((dynamic)bonusValue, lDifference);
 		baseValue -= Mathf.Max(0, iAmount - lDifference);
@@ -150,5 +142,12 @@ public class Value<T> where T : unmanaged, IComparable<T>, IEquatable<T>
 	private static void SetWhollyBounded(Value<T> iSource, T iValue)
 	{
 		iSource.baseValue = Mathf.Max((dynamic)iSource.lowerBound, Mathf.Min((dynamic)iValue, (dynamic)iSource.upperBound));
+	}
+	public bool Equals(Value<T> iOther)
+	{
+		return _boundLower == iOther._boundLower && _boundUpper == iOther._boundUpper
+		&& (dynamic)baseValue == (dynamic)iOther.baseValue && (dynamic)upperBound == (dynamic)iOther.upperBound
+		&& (dynamic)lowerBound == (dynamic)iOther.lowerBound && percentBase == iOther.percentBase
+		&& percentBonus == iOther.percentBonus && percentTotal == iOther.percentTotal;
 	}
 }
