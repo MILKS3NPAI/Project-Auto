@@ -11,5 +11,4 @@ public class Buff
 	[SerializeField] public EntityStats modification;
 	[SerializeField] private float _timeDuration = 0f;
 	[SerializeField] public float mTimeDuration { get { return _timeDuration; } set { _timeDuration = value; } }
-
 }

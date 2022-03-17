@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, Interactable
 {
-	protected delegate void StateAction();
-	protected StateAction[] stateActions = new StateAction[Enumeration.ArraySize<EntityState>()];
+	protected delegate void GameStateAction();
+	protected GameStateAction[] gameStateActions = new GameStateAction[Enumeration.ArraySize<GameState>()];
+	protected delegate void EntityStateAction();
+	protected EntityStateAction[] stateActions = new EntityStateAction[Enumeration.ArraySize<EntityState>()];
 	public Vector3 mProjectedPosition { get; set; }
 	public Vector3 mPosition { get { return transform.position; } set { transform.position = value; } }
 	public Vector2 mPosition2D { get { return mPosition; } set { mPosition = new Vector3(value.x, mPosition.y, value.y); } }
 	public bool mBeingMoved { get; protected set; }
 	public Rigidbody mBody { get; protected set; }
+	public EntityState mState { get { return _state; } set { _state = value; } }
 	bool gravity = false;
+	[SerializeField] private EntityState _state;
 
 	protected virtual void Awake()
 	{
@@ -21,6 +25,8 @@ public class Entity : MonoBehaviour, Interactable
 		{
 			stateActions[i] = DoNothing;
 		}
+		gameStateActions[(int)GameState.PLANNING] = DoPlanningState;
+		gameStateActions[(int)GameState.BATTLING] = DoBattlingState;
 	}
 
 	public void Button1(Controller iController)
@@ -72,7 +78,7 @@ public class Entity : MonoBehaviour, Interactable
 
 	protected virtual void FixedUpdate()
 	{
-		DragMove();
+		DragMove();	
 	}
 
 	public void DragMove()
@@ -92,6 +98,12 @@ public class Entity : MonoBehaviour, Interactable
 		}
 		mBeingMoved = false;
 		mBody.useGravity = gravity;
+	}
+
+	void DoPlanningState() { }
+
+	void DoBattlingState(){
+		stateActions[(int)mState]();
 	}
 
 	void DoNothing()

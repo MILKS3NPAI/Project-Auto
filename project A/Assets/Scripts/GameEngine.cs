@@ -25,6 +25,7 @@ public class GameEngine : MonoBehaviour
 		sMainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 		initialized = true;
 		sGrid = GameObject.FindObjectOfType<Grid>();
+		Enumeration.InitializeEnumeration();
 	}
 
 	public static Vector3 WorldToCell(Vector3 iPosition)

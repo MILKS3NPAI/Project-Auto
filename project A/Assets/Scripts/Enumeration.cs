@@ -8,13 +8,20 @@ using UnityEngine;
 
 public class Enumeration
 {
-	public static LayerMask INTERACTABLE_MASK = LayerMask.GetMask(new string[] { "Interactable", });
-	public static LayerMask GROUND_MASK = LayerMask.GetMask(new string[] { "Terrain", });
+	public static string[] INTERACTABLE_MASK_STRING = new string[] { "Interactable" };
+	public static string[] GROUND_MASK_STRING = new string[] { "Terrain" };
+	public static LayerMask INTERACTABLE_MASK = 0;// = LayerMask.GetMask(new string[] { "Interactable" });
+	public static LayerMask GROUND_MASK = 0;// = LayerMask.GetMask(new string[] { "Terrain" });
 	public static float sSelectionRadius = .5f;
 	public static float sPieceDragSpeed = 10f;
 	public static Vector3 sHexDifX = new Vector3(.5f, 0, 0);
 	public static Vector3 sHexDifZ = new Vector3(0, 0, .745f);
 
+	public static void InitializeEnumeration() {
+		if (INTERACTABLE_MASK != 0) { return; }
+		INTERACTABLE_MASK = LayerMask.GetMask(INTERACTABLE_MASK_STRING);
+		GROUND_MASK = LayerMask.GetMask(GROUND_MASK_STRING);
+	}
 
 	public static unsafe int BoolToInt(bool iBool)
 	{
