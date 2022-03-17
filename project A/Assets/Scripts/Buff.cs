@@ -36,4 +36,18 @@ public class Buff
 	{
 		modification = iStatChanges;
 	}
+
+	public void Tick(float iTimeDelta)
+	{
+		if (mTimed)
+		{
+			_timeRemaining -= iTimeDelta;
+			if (_timeRemaining <= 0f)
+			{
+				target.RemoveBuff(this);
+				target = null;
+				_timeRemaining = mTimeDuration;
+			}
+		}
+	}
 }

@@ -107,6 +107,10 @@ public class Entity : MonoBehaviour, Interactable
 	}
 
 	void DoBattlingState(){
+		for (int i = 0; i < activeBuffs.Count; i++)
+		{
+			activeBuffs[i].Tick(Time.fixedDeltaTime);
+		}
 		stateActions[(int)mState]();
 	}
 
