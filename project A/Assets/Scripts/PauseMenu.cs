@@ -22,14 +22,14 @@ public class PauseMenu : MonoBehaviour
         pauseMenu.SetActive(false);
         isPaused = false;
         Time.timeScale = 1;
-        print(name + ": Resume");
+        //print(name + ": Resume");
     }
     private void PauseGame()
     {
         pauseMenu.SetActive(true);
         isPaused = true;
         Time.timeScale = 0;
-        print(name + ": Pause");
+        //print(name + ": Pause");
     }
     public void QuitGame()
     {
