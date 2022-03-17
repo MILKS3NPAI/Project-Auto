@@ -16,6 +16,8 @@ public class Entity : MonoBehaviour, Interactable
 	public EntityState mState { get { return _state; } set { _state = value; } }
 	bool gravity = false;
 	[SerializeField] private EntityState _state;
+	List<Buff> activeBuffs = new List<Buff>();
+	[SerializeField] protected EntityStats stats = new EntityStats();
 
 	protected virtual void Awake()
 	{
@@ -110,5 +112,26 @@ public class Entity : MonoBehaviour, Interactable
 
 	void DoNothing()
 	{
+	}
+
+	public void AddBuff(Buff iBuff)
+	{
+		if (iBuff.mUnique && activeBuffs.Contains(iBuff))
+		{
+			RemoveBuff(iBuff);
+			AddBuff(iBuff);
+			return;
+		}
+		activeBuffs.Add(iBuff);
+		stats.Add(iBuff.modification);
+	}
+
+	public void RemoveBuff(Buff iBuff)
+	{
+		if (activeBuffs.Contains(iBuff))
+		{
+			activeBuffs.Remove(iBuff);
+			stats.Subtract(iBuff.modification);
+		}
 	}
 }
