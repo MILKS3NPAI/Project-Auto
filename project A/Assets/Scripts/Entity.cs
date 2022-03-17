@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour, Interactable
 {
+	protected delegate void StateAction();
+	protected StateAction[] stateActions = new StateAction[Enumeration.ArraySize<EntityState>()];
 	public Vector3 mProjectedPosition { get; set; }
 	public Vector3 mPosition { get { return transform.position; } set { transform.position = value; } }
 	public Vector2 mPosition2D { get { return mPosition; } set { mPosition = new Vector3(value.x, mPosition.y, value.y); } }
@@ -15,6 +17,10 @@ public class Entity : MonoBehaviour, Interactable
 	{
 		mBody = GetComponent<Rigidbody>();
 		gravity = mBody.useGravity;
+		for (int i = 0; i < stateActions.Length; i++)
+		{
+			stateActions[i] = DoNothing;
+		}
 	}
 
 	public void Button1(Controller iController)
@@ -86,5 +92,9 @@ public class Entity : MonoBehaviour, Interactable
 		}
 		mBeingMoved = false;
 		mBody.useGravity = gravity;
+	}
+
+	void DoNothing()
+	{
 	}
 }
