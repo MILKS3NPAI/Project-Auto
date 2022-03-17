@@ -116,7 +116,7 @@ public class EntityStats
 
 	public void SetStat(IntStat iStat, int iValue)
 	{
-		if (iValue == 0) { return; }
+		if (iValue == entityIntStats[(int)iStat].mBaseValue) { return; }
 		Value<int> lPrev = new Value<int>(entityIntStats[(int)iStat]);
 		entityIntStats[(int)iStat].mBaseValue = iValue;
 		intValueChanged[(int)iStat](lPrev, entityIntStats[(int)iStat]);
@@ -124,16 +124,80 @@ public class EntityStats
 
 	public void SetStat(FloatStat iStat, float iValue)
 	{
-		if (iValue == 0) { return; }
+		if (iValue == entityFloatStats[(int)iStat].mBaseValue) { return; }
 		Value<float> lPrev = new Value<float>(entityFloatStats[(int)iStat]);
 		entityFloatStats[(int)iStat].mBaseValue = iValue;
 		floatValueChanged[(int)iStat](lPrev, entityFloatStats[(int)iStat]);
 	}
 
-	public static EntityStats operator +(EntityStats iLeft, EntityStats iRight)
+	public void AddStat(IntStat iStat, int iValue)
 	{
-		EntityStats lReturn = new EntityStats(iLeft);
-		lReturn += iRight;
-		return lReturn;
+		if (iValue == 0) { return; }
+		Value<int> lPrev = new Value<int>(entityIntStats[(int)iStat]);
+		entityIntStats[(int)iStat].mBaseValue += iValue;
+		intValueChanged[(int)iStat](lPrev, entityIntStats[(int)iStat]);
+	}
+
+	public void AddStat(FloatStat iStat, float iValue)
+	{
+		if (iValue == 0) { return; }
+		Value<float> lPrev = new Value<float>(entityFloatStats[(int)iStat]);
+		entityFloatStats[(int)iStat].mBaseValue += iValue;
+		floatValueChanged[(int)iStat](lPrev, entityFloatStats[(int)iStat]);
+	}
+
+	public void AddStat(IntStat iStat, Value<int> iValue)
+	{
+		if (iValue.mValue == 0) { return; }
+		Value<int> lPrev = new Value<int>(entityIntStats[(int)iStat]);
+		entityIntStats[(int)iStat] += iValue;
+		intValueChanged[(int)iStat](lPrev, entityIntStats[(int)iStat]);
+	}
+
+	public void AddStat(FloatStat iStat, Value<float> iValue)
+	{
+		if (iValue.mValue == 0) { return; }
+		Value<float> lPrev = new Value<float>(entityFloatStats[(int)iStat]);
+		entityFloatStats[(int)iStat] += iValue;
+		floatValueChanged[(int)iStat](lPrev, entityFloatStats[(int)iStat]);
+	}
+
+	public void SubStat(IntStat iStat, int iValue)
+	{
+		if (iValue == 0) { return; }
+		Value<int> lPrev = new Value<int>(entityIntStats[(int)iStat]);
+		entityIntStats[(int)iStat].mBaseValue -= iValue;
+		intValueChanged[(int)iStat](lPrev, entityIntStats[(int)iStat]);
+	}
+
+	public void SubStat(FloatStat iStat, float iValue)
+	{
+		if (iValue == 0) { return; }
+		Value<float> lPrev = new Value<float>(entityFloatStats[(int)iStat]);
+		entityFloatStats[(int)iStat].mBaseValue -= iValue;
+		floatValueChanged[(int)iStat](lPrev, entityFloatStats[(int)iStat]);
+	}
+
+	public void Add(EntityStats iOther) {
+		foreach (IntStat lStat in Enumeration.EnumArray<IntStat>())
+		{
+			AddStat(lStat, iOther.GetStat(lStat));
+		}
+		foreach (FloatStat lStat in Enumeration.EnumArray<FloatStat>())
+		{
+			AddStat(lStat, iOther.GetStat(lStat));
+		}
+	}
+
+	public void Subtract(EntityStats iOther)
+	{
+		foreach (IntStat lStat in Enumeration.EnumArray<IntStat>())
+		{
+			SubStat(lStat, iOther.GetStat(lStat));
+		}
+		foreach (FloatStat lStat in Enumeration.EnumArray<FloatStat>())
+		{
+			SubStat(lStat, iOther.GetStat(lStat));
+		}
 	}
 }
