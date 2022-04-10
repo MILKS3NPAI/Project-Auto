@@ -8,10 +8,20 @@ public class ButtonClick : MonoBehaviour
 {
     // using https://youtu.be/EfSImxUqmO0 
     public UnityEvent unityEvent = new UnityEvent();
-    public GameObject button;
+    private int buttonAction = 0;
     private void Start()
     {
-        button = gameObject;
+        if (name.ToLower().Contains("buy"))
+        {
+            buttonAction = 1;
+        }
+        else if (name.ToLower().Contains("refresh"))
+        {
+            buttonAction = 2;
+        }
+        else if(name.ToLower().Contains("unit")){
+            buttonAction = 3;
+        }
     }
     void Update()
     {
@@ -50,8 +60,12 @@ public class ButtonClick : MonoBehaviour
             }
         }*/
     }
-    public void ButtonMethod()
+    /*public void ButtonMethod()
     {
         print(name + ": I was clicked");
+    }*/
+    public int ReturnButtonAction()
+    {
+        return buttonAction;
     }
 }

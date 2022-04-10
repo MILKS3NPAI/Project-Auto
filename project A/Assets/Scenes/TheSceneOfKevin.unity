@@ -5300,6 +5300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ef8b5a3865c6b4b9e0041859b5b704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _state: 0
 --- !u!54 &518202673
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7528,13 +7529,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 736808907}
-        m_TargetAssemblyTypeName: ButtonClick, Assembly-CSharp
-        m_MethodName: ButtonMethod
-        m_Mode: 1
+      - m_Target: {fileID: 986270219}
+        m_TargetAssemblyTypeName: ButtonAction, Assembly-CSharp
+        m_MethodName: DoButtonAction
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 736808902}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -9609,6 +9610,7 @@ GameObject:
   - component: {fileID: 986270218}
   - component: {fileID: 986270217}
   - component: {fileID: 986270216}
+  - component: {fileID: 986270219}
   m_Layer: 5
   m_Name: Main Buttons Canvas
   m_TagString: Untagged
@@ -9699,6 +9701,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: -200
   m_TargetDisplay: 0
+--- !u!114 &986270219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986270214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8202c0b5f521730478aff18129a3d133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &998206203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14525,13 +14539,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1537666874}
-        m_TargetAssemblyTypeName: ButtonClick, Assembly-CSharp
-        m_MethodName: ButtonMethod
-        m_Mode: 1
+      - m_Target: {fileID: 986270219}
+        m_TargetAssemblyTypeName: ButtonAction, Assembly-CSharp
+        m_MethodName: DoButtonAction
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1537666869}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -16520,6 +16534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ef8b5a3865c6b4b9e0041859b5b704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _state: 0
 --- !u!54 &1814873606
 Rigidbody:
   m_ObjectHideFlags: 0
