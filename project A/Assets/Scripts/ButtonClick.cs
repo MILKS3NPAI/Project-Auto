@@ -35,35 +35,7 @@ public class ButtonClick : MonoBehaviour
                 unityEvent.Invoke();
             }
         }
-        /*if (Mouse.current.leftButton.isPressed)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;*/
-            /*if (Physics.Raycast(ray, out hit))
-            {
-                Debug.DrawRay(Vector3.zero, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-                //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-                print(hit.collider.gameObject);
-                if (hit.collider.gameObject == gameObject)
-                {
-                    print("WORLD");
-                }
-            }*/
-            /*if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity))
-            {
-                print(Mouse.current.position.ReadValue());
-                //Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * Mathf.Infinity, Color.yellow);
-                Debug.DrawLine(Vector3.zero, transform.position, Color.red, int.MaxValue);
-                //Debug.DrawLine(Mouse.current.position.ReadValue(), transform.position, Color.green, int.MaxValue);
-                Debug.DrawRay(Mouse.current.position.ReadValue(), transform.position, Color.blue, int.MaxValue);
-                print(hit.collider.gameObject);
-            }
-        }*/
     }
-    /*public void ButtonMethod()
-    {
-        print(name + ": I was clicked");
-    }*/
     public int ReturnButtonAction()
     {
         return buttonAction;
