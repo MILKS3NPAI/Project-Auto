@@ -8,7 +8,8 @@ public class ButtonClick : MonoBehaviour
 {
     // using https://youtu.be/EfSImxUqmO0 
     public UnityEvent unityEvent = new UnityEvent();
-    private int buttonAction = 0;
+    private int buttonAction;
+    private int unitIndex;
     private void Start()
     {
         if (name.ToLower().Contains("buy"))
@@ -36,8 +37,16 @@ public class ButtonClick : MonoBehaviour
             }
         }
     }
-    public int ReturnButtonAction()
+    public int GetButtonAction()
     {
         return buttonAction;
+    }
+    public int GetUnitIndex()
+    {
+        return unitIndex;
+    }
+    public void SetUnitIndex(int index)
+    {
+        unitIndex = index;
     }
 }

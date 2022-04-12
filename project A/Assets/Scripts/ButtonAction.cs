@@ -1,19 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonAction : MonoBehaviour
 {
-    [SerializeField] Vector3 lowerLeftPosition;
     [SerializeField] float horizontalButtonOffset;
+    [SerializeField] GameObject unitButton;
+    [SerializeField] Vector3 lowerLeftPosition;
+    private int spawnableObjectsAmount;
     private List<GameObject> spawnableObjects;
     private void Start()
     {
         while (spawnableObjects == null || spawnableObjects.Count == 0)
             spawnableObjects = FindAllObjectsInGivenLayer(8); // Interactable layer
+        spawnableObjectsAmount = spawnableObjects.Count; // This is the number of "Interactable" objects (to be considered as units)
+        for (int i = 0; i < 5; i++)
+        {
+            GameObject createdUnitButton = Instantiate(unitButton);
+            int randomUnit = Random.Range(0, spawnableObjectsAmount);
+            createdUnitButton.SetActive(true);
+            createdUnitButton.name = "Unit Button " + (randomUnit + 1);
+            createdUnitButton.transform.parent = transform;
+            createdUnitButton.transform.GetChild(0).GetComponent<Text>().text = "Unit " + (randomUnit + 1);
+            createdUnitButton.GetComponent<ButtonClick>().SetUnitIndex(randomUnit);
+        }
     }
     private void Update()
     {
+        print(name + ": I have " + transform.childCount + " children");
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).transform.localPosition = lowerLeftPosition + Vector3.right * horizontalButtonOffset * i;
@@ -24,7 +39,7 @@ public class ButtonAction : MonoBehaviour
     {
         //print(obj.name + ": I was clicked using " + name + "'s script");
         if (obj.GetComponent<ButtonClick>()) {
-            int buttonAction = obj.GetComponent<ButtonClick>().ReturnButtonAction();
+            int buttonAction = obj.GetComponent<ButtonClick>().GetButtonAction();
             switch (buttonAction)
             {
                 case 1: // buy xp
@@ -36,16 +51,16 @@ public class ButtonAction : MonoBehaviour
                 case 3: // buy units
                     print(obj.name + ": You bought a unit");
                     obj.SetActive(false);
-                    SpawnUnit();
+                    SpawnUnit(obj.GetComponent<ButtonClick>().GetUnitIndex());
                     break;
                 default:
                     break;
             }
         }
     }
-    private void SpawnUnit()
+    private void SpawnUnit(int unitIndex)
     {
-        GameObject spawnedObj = Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
+        GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]); //Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
         spawnedObj.transform.position = new Vector3(1.6f, 5, 2.07f);
     }
     private List<GameObject> FindAllObjectsInGivenLayer(int layer)
