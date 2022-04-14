@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ButtonAction : MonoBehaviour
 {
+    public static Dictionary<GameObject, bool> occupiedTiles = new Dictionary<GameObject, bool>();
     [SerializeField] float horizontalButtonOffset;
     [SerializeField] GameObject unitButton;
     [SerializeField] Vector3 lowerLeftPosition;
@@ -33,6 +34,16 @@ public class ButtonAction : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).transform.localPosition = lowerLeftPosition + Vector3.right * horizontalButtonOffset * i;
+        }
+        for (int i = 0; i < spawnableObjectsAmount; i++)
+        {
+            GameObject tempObj = spawnableObjects[i];
+            //print(name + ": " + tempObj.name + " is at location " + tempObj.transform.position + " ; " + tempObj.transform.localPosition);
+        }
+        print(name + " Occupied tiles count is " + occupiedTiles.Count);
+        for (int i = 0; i < occupiedTiles.Count; i++)
+        {
+            //print(name + ": i = " + i + " ");
         }
     }
     // can only have 0-1 parameter (otherwise it won't show in options for OnClick() in inspector)
@@ -88,6 +99,20 @@ public class ButtonAction : MonoBehaviour
             int newUnitIndex = Random.Range(0, spawnableObjectsAmount);
             unitButtonList[i].transform.GetChild(0).GetComponent<Text>().text = "Unit " + (newUnitIndex + 1);
             unitButtonList[i].GetComponent<ButtonClick>().SetUnitIndex(newUnitIndex);
+        }
+    }
+    public static void UpdateOccupiedTiles(Collision tile, bool addTile)
+    {
+        GameObject tileObj = tile.gameObject;
+        if (occupiedTiles.ContainsKey(tileObj) && !addTile)
+        {
+            //tileObj.transform.localScale = 1f * Vector3.one;
+            occupiedTiles.Remove(tileObj);
+        }
+        else if (!occupiedTiles.ContainsKey(tileObj) && addTile)
+        {
+            //tileObj.transform.localScale = 0.9f * Vector3.one;
+            occupiedTiles.Add(tileObj, true);
         }
     }
 }

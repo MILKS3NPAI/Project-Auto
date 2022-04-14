@@ -138,4 +138,15 @@ public class Entity : MonoBehaviour, Interactable
 			stats.Subtract(iBuff.modification);
 		}
 	}
+
+    public void OnCollisionEnter(Collision collision)
+    {
+		//print(name + ": Hit " + collision.gameObject.name);
+		ButtonAction.UpdateOccupiedTiles(collision, true);
+    }
+    public void OnCollisionExit(Collision collision)
+    {
+		//print(name + ": Left " + collision.gameObject.name);
+		ButtonAction.UpdateOccupiedTiles(collision, false);
+	}
 }
