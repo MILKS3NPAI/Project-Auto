@@ -5164,6 +5164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalButtonOffset: 0
   unitButton: {fileID: 0}
+  tileMapObject: {fileID: 0}
   lowerLeftPosition: {x: 0, y: 0, z: 0}
 --- !u!1001 &434984332
 PrefabInstance:
@@ -6658,6 +6659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalButtonOffset: 10
   unitButton: {fileID: 698502382}
+  tileMapObject: {fileID: 0}
   lowerLeftPosition: {x: -30, y: -15, z: -900}
 --- !u!114 &567770226
 MonoBehaviour:
@@ -11211,6 +11213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalButtonOffset: 10
   unitButton: {fileID: 1983096582}
+  tileMapObject: {fileID: 646380633}
   lowerLeftPosition: {x: -30, y: -15, z: -900}
 --- !u!1001 &998206203
 PrefabInstance:

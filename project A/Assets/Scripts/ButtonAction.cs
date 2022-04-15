@@ -8,10 +8,12 @@ public class ButtonAction : MonoBehaviour
     public static Dictionary<GameObject, bool> occupiedTiles = new Dictionary<GameObject, bool>();
     [SerializeField] float horizontalButtonOffset;
     [SerializeField] GameObject unitButton;
+    [SerializeField] GameObject tileMapObject;
     [SerializeField] Vector3 lowerLeftPosition;
     private GameObject[] unitButtonList = new GameObject[5]; // the number of units purchasable in the shop
     private int spawnableObjectsAmount;
     private List<GameObject> spawnableObjects;
+    private List<GameObject> possibleTileObjects = new List<GameObject>();
     private void Start()
     {
         while (spawnableObjects == null || spawnableObjects.Count == 0)
@@ -27,6 +29,21 @@ public class ButtonAction : MonoBehaviour
             createdUnitButton.transform.GetChild(0).GetComponent<Text>().text = "Unit " + (randomUnitIndex + 1);
             createdUnitButton.GetComponent<ButtonClick>().SetUnitIndex(randomUnitIndex);
             unitButtonList[i] = createdUnitButton;
+        }
+        if (!tileMapObject)
+        {
+            print(name + ": tileMapObject not set");
+        }
+        else
+        {
+            for (int i = 0; i < tileMapObject.transform.childCount; i++)
+            {
+                if (tileMapObject.transform.GetChild(i).name.EndsWith("0"))
+                {
+                    print(name + ": Added tile " + tileMapObject.transform.GetChild(i).name);
+                    possibleTileObjects.Add(tileMapObject.transform.GetChild(i).gameObject);
+                }
+            }
         }
     }
     private void Update()
@@ -71,7 +88,15 @@ public class ButtonAction : MonoBehaviour
     private void SpawnUnit(int unitIndex)
     {
         GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]); //Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
-        spawnedObj.transform.position = new Vector3(1.6f, 5, 2.07f);
+        Vector3 spawnedPosition = FindNextAvailableTile();
+        if (spawnedPosition != Vector3.negativeInfinity)
+        {
+            spawnedObj.transform.position = spawnedPosition;
+        }
+        else
+        {
+            spawnedObj.transform.position = new Vector3(1.6f, 5, 2.07f);
+        }
     }
     private List<GameObject> FindAllObjectsInGivenLayer(int layer)
     {
@@ -100,6 +125,17 @@ public class ButtonAction : MonoBehaviour
             unitButtonList[i].transform.GetChild(0).GetComponent<Text>().text = "Unit " + (newUnitIndex + 1);
             unitButtonList[i].GetComponent<ButtonClick>().SetUnitIndex(newUnitIndex);
         }
+    }
+    private Vector3 FindNextAvailableTile()
+    {
+        for (int i = 0; i < possibleTileObjects.Count; i++)
+        {
+            if (!occupiedTiles.ContainsKey(possibleTileObjects[i]))
+            {
+                return possibleTileObjects[i].transform.position + new Vector3(0, 5, 0);
+            }
+        }
+        return Vector3.negativeInfinity;
     }
     public static void UpdateOccupiedTiles(Collision tile, bool addTile)
     {
