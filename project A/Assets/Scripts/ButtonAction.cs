@@ -127,6 +127,7 @@ public class ButtonAction : MonoBehaviour
             int newUnitIndex = Random.Range(0, spawnableObjectsAmount);
             unitButtonList[i].transform.GetChild(0).GetComponent<Text>().text = "Unit " + (newUnitIndex + 1);
             unitButtonList[i].GetComponent<ButtonClick>().SetUnitIndex(newUnitIndex);
+            unitButtonList[i].SetActive(true);
         }
     }
     private Vector3 FindNextAvailableTile()
