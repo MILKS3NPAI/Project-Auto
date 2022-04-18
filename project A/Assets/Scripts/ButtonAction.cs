@@ -10,6 +10,7 @@ public class ButtonAction : MonoBehaviour
     [SerializeField] GameObject unitButton;
     [SerializeField] GameObject tileMapObject;
     [SerializeField] Vector3 lowerLeftPosition;
+    private const float SPAWN_POS_Y = 1;
     private GameObject[] unitButtonList = new GameObject[5]; // the number of units purchasable in the shop
     private int spawnableObjectsAmount;
     private List<GameObject> spawnableObjects;
@@ -87,15 +88,17 @@ public class ButtonAction : MonoBehaviour
     }
     private void SpawnUnit(int unitIndex)
     {
-        GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]); //Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
+        //GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]); //Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
         Vector3 spawnedPosition = FindNextAvailableTile();
         if (spawnedPosition != Vector3.negativeInfinity)
         {
+            GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]);
             spawnedObj.transform.position = spawnedPosition;
         }
         else
         {
-            spawnedObj.transform.position = new Vector3(1.6f, 5, 2.07f);
+            print(name + ": Cannot spawn unit");
+            //spawnedObj.transform.position = new Vector3(1.6f, SPAWN_POS_Y, 2.07f);
         }
     }
     private List<GameObject> FindAllObjectsInGivenLayer(int layer)
@@ -132,7 +135,7 @@ public class ButtonAction : MonoBehaviour
         {
             if (!occupiedTiles.ContainsKey(possibleTileObjects[i]))
             {
-                return possibleTileObjects[i].transform.position + new Vector3(0, 5, 0);
+                return possibleTileObjects[i].transform.position + new Vector3(0, SPAWN_POS_Y, 0);
             }
         }
         return Vector3.negativeInfinity;
