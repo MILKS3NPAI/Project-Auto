@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ButtonAction : MonoBehaviour
 {
     public static Dictionary<GameObject, bool> occupiedTiles = new Dictionary<GameObject, bool>();
     [SerializeField] float horizontalButtonOffset;
-    [SerializeField] GameObject unitButton;
+    [SerializeField] GameObject unitButton, spawnedUnitsParent;
     [SerializeField] GameObject tileMapObject;
     [SerializeField] Vector3 lowerLeftPosition;
     private const float SPAWN_POS_Y = 1;
@@ -41,14 +43,40 @@ public class ButtonAction : MonoBehaviour
             {
                 if (tileMapObject.transform.GetChild(i).name.EndsWith("0"))
                 {
-                    print(name + ": Added tile " + tileMapObject.transform.GetChild(i).name);
+                    //print(name + ": Added tile " + tileMapObject.transform.GetChild(i).name);
                     possibleTileObjects.Add(tileMapObject.transform.GetChild(i).gameObject);
                 }
             }
         }
     }
+    private bool IsPointerOverUIObject()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(mousePos.x, mousePos.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
+    }
     private void Update()
     {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            print(name + ": I was clicked");
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                print(name + ": Success");
+            }
+            if (!IsPointerOverUIObject())
+            {
+                print(name + ": Also success");
+            }
+            print(name + ": IsPointerOverUIObject? " + IsPointerOverUIObject());
+        }
+
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).transform.localPosition = lowerLeftPosition + Vector3.right * horizontalButtonOffset * i;
@@ -58,7 +86,7 @@ public class ButtonAction : MonoBehaviour
             GameObject tempObj = spawnableObjects[i];
             //print(name + ": " + tempObj.name + " is at location " + tempObj.transform.position + " ; " + tempObj.transform.localPosition);
         }
-        print(name + " Occupied tiles count is " + occupiedTiles.Count);
+        //print(name + " Occupied tiles count is " + occupiedTiles.Count);
         for (int i = 0; i < occupiedTiles.Count; i++)
         {
             //print(name + ": i = " + i + " ");
@@ -94,6 +122,7 @@ public class ButtonAction : MonoBehaviour
         {
             GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]);
             spawnedObj.transform.position = spawnedPosition;
+            spawnedObj.transform.parent = spawnedUnitsParent.transform;
         }
         else
         {
