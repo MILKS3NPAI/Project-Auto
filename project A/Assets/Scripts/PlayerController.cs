@@ -27,13 +27,16 @@ public class PlayerController : Controller
 
 	protected override void CursorMove(Vector2 iPosition)
 	{
-		//transform.position = GameEngine.MouseToWorld(iPosition);
-		Vector3 lVec = GameEngine.WorldToCell(GameEngine.MouseToWorld(iPosition));
-		//transform.position = new Vector3(lVec.x, lVec.z, lVec.y);
-		transform.position = lVec;
-		if (mCursorHeld && selectedObject != null && transform.position != Vector3.zero)
+		if (!PauseMenu.staticIsPaused)
 		{
-			selectedObject.OnDrag(this);
+			//transform.position = GameEngine.MouseToWorld(iPosition);
+			Vector3 lVec = GameEngine.WorldToCell(GameEngine.MouseToWorld(iPosition));
+			//transform.position = new Vector3(lVec.x, lVec.z, lVec.y);
+			transform.position = lVec;
+			if (mCursorHeld && selectedObject != null && transform.position != Vector3.zero)
+			{
+				selectedObject.OnDrag(this);
+			}
 		}
 	}
 }

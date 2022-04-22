@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonAction : MonoBehaviour
 {
@@ -167,5 +168,9 @@ public class ButtonAction : MonoBehaviour
     public void OnPointerExit()
     {
         mouseIsOverButton = false;
+    }
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 }

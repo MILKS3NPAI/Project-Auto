@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
+    public static bool staticIsPaused = false;
     public GameObject pauseMenu;
     private bool isPaused;
     private void Awake()
@@ -21,6 +22,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         isPaused = false;
+        staticIsPaused = false;
         Time.timeScale = 1;
         //print(name + ": Resume");
     }
@@ -28,6 +30,7 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(true);
         isPaused = true;
+        staticIsPaused = true;
         Time.timeScale = 0;
         //print(name + ": Pause");
     }
