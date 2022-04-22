@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class ButtonAction : MonoBehaviour
 {
+    public static bool mouseIsOverButton = false;
     public static Dictionary<GameObject, bool> occupiedTiles = new Dictionary<GameObject, bool>();
     [SerializeField] float horizontalButtonOffset;
     [SerializeField] GameObject unitButton, spawnedUnitsParent;
@@ -49,34 +50,8 @@ public class ButtonAction : MonoBehaviour
             }
         }
     }
-    private bool IsPointerOverUIObject()
-    {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        eventDataCurrentPosition.position = new Vector2(mousePos.x, mousePos.y);
-        List<RaycastResult> results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
-        return results.Count > 0;
-    }
     private void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            print(name + ": I was clicked");
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                print(name + ": Success");
-            }
-            if (!IsPointerOverUIObject())
-            {
-                print(name + ": Also success");
-            }
-            print(name + ": IsPointerOverUIObject? " + IsPointerOverUIObject());
-        }
-
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).transform.localPosition = lowerLeftPosition + Vector3.right * horizontalButtonOffset * i;
@@ -107,6 +82,7 @@ public class ButtonAction : MonoBehaviour
                     break;
                 case 3: // buy units
                     obj.SetActive(false);
+                    mouseIsOverButton = false;
                     SpawnUnit(obj.GetComponent<ButtonClick>().GetUnitIndex());
                     break;
                 default:
@@ -145,7 +121,7 @@ public class ButtonAction : MonoBehaviour
                     spawnableObjects.Add(objArray[i]);
                 }
             }
-            print(name + ": There are " + spawnableObjects.Count + " interactable objects");
+            //print(name + ": There are " + spawnableObjects.Count + " interactable objects");
             return spawnableObjects;
         }
     }
@@ -183,5 +159,13 @@ public class ButtonAction : MonoBehaviour
             //tileObj.transform.localScale = 0.9f * Vector3.one;
             occupiedTiles.Add(tileObj, true);
         }
+    }
+    public void OnPointerEnter()
+    {
+        mouseIsOverButton = true;
+    }
+    public void OnPointerExit()
+    {
+        mouseIsOverButton = false;
     }
 }

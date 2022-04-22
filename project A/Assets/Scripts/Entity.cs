@@ -48,9 +48,12 @@ public class Entity : MonoBehaviour, Interactable
 
 	public void OnClick(Controller iController)
 	{
-		mBeingMoved = true;
-		mProjectedPosition = iController.transform.position + Vector3.up * 2f;
-		mBody.useGravity = false;
+		if (!ButtonAction.mouseIsOverButton)
+		{
+			mBeingMoved = true;
+			mProjectedPosition = iController.transform.position + Vector3.up * 2f;
+			mBody.useGravity = false;
+		}
 	}
 
 	public void OnDrag(Controller iController)
