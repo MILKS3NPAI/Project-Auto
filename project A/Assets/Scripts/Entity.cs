@@ -145,6 +145,7 @@ public class Entity : MonoBehaviour, Interactable
     public void OnCollisionEnter(Collision collision)
     {
 		//print(name + ": Hit " + collision.gameObject.name);
+		ButtonAction.unitIsSpawning = false;
 		ButtonAction.UpdateOccupiedTiles(collision, true);
     }
     public void OnCollisionExit(Collision collision)

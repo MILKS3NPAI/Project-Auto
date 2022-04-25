@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonAction : MonoBehaviour
 {
-    public static bool mouseIsOverButton = false;
+    public static bool mouseIsOverButton = false, unitIsSpawning = false;
     public static Dictionary<GameObject, bool> occupiedTiles = new Dictionary<GameObject, bool>();
     [SerializeField] float horizontalButtonOffset;
     [SerializeField] GameObject unitButton, spawnedUnitsParent;
@@ -95,8 +95,9 @@ public class ButtonAction : MonoBehaviour
     {
         //GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]); //Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
         Vector3 spawnedPosition = FindNextAvailableTile();
-        if (spawnedPosition != Vector3.negativeInfinity)
+        if (!(spawnedPosition.x == Mathf.NegativeInfinity || spawnedPosition.y == Mathf.NegativeInfinity || spawnedPosition.z == Mathf.NegativeInfinity) && !unitIsSpawning)
         {
+            unitIsSpawning = true;
             GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]);
             spawnedObj.transform.position = spawnedPosition;
             spawnedObj.transform.parent = spawnedUnitsParent.transform;
