@@ -73,49 +73,194 @@ public class ButtonAction : MonoBehaviour
     }
     private int GenerateRandomUnit()
     {
-        int randomUnit;
+        int randomUnit = 1;
         int temp;
-        // for each stage n, the probability of getting units that cost n is 2 / (n + 1), the remaining costs are equally likely
-        switch (currentStage)
+        // if you are in a stage with the maximum unit cost spawnable n, the probability of it appearing is 2 / (n + 2), the remaining costs are equally likely
+        if (Random.Range(0, 6) > 0)
         {
-            case 1:
-                randomUnit = 1;
-                break;
-            case 2:
-                temp = Random.Range(1, 4);
-                randomUnit = temp >= 2 ? 2 : 1;
-                break;
-            case 3:
-                temp = Random.Range(1, 5);
-                randomUnit = temp >= 3 ? 3 : temp;
-                break;
-            case 4:
-                temp = Random.Range(1, 6);
-                randomUnit = temp >= 4 ? 4 : temp;
-                break;
-            case 5:
-                temp = Random.Range(1, 7);
-                randomUnit = temp >= 5 ? 5 : temp;
-                break;
-            case 6:
-                temp = Random.Range(1, 8);
-                randomUnit = temp >= 6 ? 6 : temp;
-                break;
-            case 7:
-                temp = Random.Range(1, 9);
-                randomUnit = temp >= 7 ? 7 : temp;
-                break;
-            case 8:
-                temp = Random.Range(1, 10);
-                randomUnit = temp >= 8 ? 8 : temp;
-                break;
-            case 9:
-                temp = Random.Range(1, 11);
-                randomUnit = temp >= 9 ? 9 : temp;
-                break;
-            default:
-                randomUnit = 1;
-                break;
+            switch (currentStage)
+            {
+                case 1:
+                    randomUnit = 1;
+                    break;
+                case 2:
+                    temp = Random.Range(1, 5);
+                    randomUnit = temp >= 3 ? 2 : temp;
+                    if (temp == 2)
+                    {
+                        randomUnit = 1;
+                    }
+                    break;
+                case 3:
+                    temp = Random.Range(1, 6);
+                    randomUnit = temp >= 4 ? 3 : temp;
+                    if (temp == 3)
+                    {
+                        randomUnit = Random.Range(1, 3);
+                    }
+                    break;
+                case 4:
+                    temp = Random.Range(1, 7);
+                    randomUnit = temp >= 5 ? 4 : temp;
+                    if (temp == 4)
+                    {
+                        randomUnit = Random.Range(1, 4);
+                    }
+                    break;
+                case 5:
+                    temp = Random.Range(1, 8);
+                    randomUnit = temp >= 6 ? 5 : temp;
+                    if (temp == 5)
+                    {
+                        randomUnit = Random.Range(1, 5);
+                    }
+                    break;
+                case 6:
+                    temp = Random.Range(1, 9);
+                    randomUnit = temp >= 7 ? 6 : temp;
+                    if (temp == 6)
+                    {
+                        randomUnit = Random.Range(1, 6);
+                    }
+                    break;
+                case 7:
+                    temp = Random.Range(1, 10);
+                    randomUnit = temp >= 8 ? 7 : temp;
+                    if (temp == 7)
+                    {
+                        randomUnit = Random.Range(1, 7);
+                    }
+                    break;
+                case 8:
+                    temp = Random.Range(1, 11);
+                    randomUnit = temp >= 9 ? 8 : temp;
+                    if (temp == 8)
+                    {
+                        randomUnit = Random.Range(1, 8);
+                    }
+                    break;
+                case 9:
+                    temp = Random.Range(1, 12);
+                    randomUnit = temp >= 10 ? 9 : temp;
+                    if (temp == 9)
+                    {
+                        randomUnit = Random.Range(1, 9);
+                    }
+                    break;
+                default:
+                    randomUnit = 1;
+                    break;
+            }
+        }
+        // if you are in a stage with the maximum unit cost spawnable n, the probability of it appearing is n / (sigma 1 to n),
+        // the remaining costs have probabilities (n - 1) / (sigma 1 to n), (n - 2) / (sigma 1 to n), ..., 2 / (sigma 1 to n), 1 / (sigma 1 to n)
+        else
+        {
+            switch (currentStage)
+            {
+                case 1:
+                    randomUnit = 1;
+                    break;
+                case 2:
+                    temp = Random.Range(1, 3 + 1);
+                    for (int i = 2; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 3:
+                    temp = Random.Range(1, 6 + 1);
+                    for (int i = 3; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 4:
+                    temp = Random.Range(1, 10 + 1);
+                    for (int i = 4; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 5:
+                    temp = Random.Range(1, 15 + 1);
+                    for (int i = 5; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 6:
+                    temp = Random.Range(1, 21 + 1);
+                    for (int i = 6; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 7:
+                    temp = Random.Range(1, 28 + 1);
+                    for (int i = 7; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 8:
+                    temp = Random.Range(1, 36 + 1);
+                    for (int i = 8; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                case 9:
+                    temp = Random.Range(1, 45 + 1);
+                    for (int i = 9; i > 0; i--)
+                    {
+                        temp -= i;
+                        if (temp <= 0)
+                        {
+                            randomUnit = i;
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    randomUnit = 1;
+                    break;
+            }
         }
         return randomUnit - 1;
     }
