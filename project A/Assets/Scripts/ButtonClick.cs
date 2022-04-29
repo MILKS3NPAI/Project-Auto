@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class ButtonClick : MonoBehaviour
 {
     // using https://youtu.be/EfSImxUqmO0 
+    public Dictionary<int, int> unitProbabilities = new Dictionary<int, int>();
     public UnityEvent unityEvent = new UnityEvent();
     private int buttonAction;
     private int unitIndex;

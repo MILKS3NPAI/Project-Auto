@@ -270,6 +270,90 @@ public class ButtonAction : MonoBehaviour
         }
         return randomUnit - 1;
     }
+    private Dictionary<int, int> GenerateRandomUnits()
+    {
+        // 1st int is used for the probability of spawning (a random number >= n / 6) and 2nd int is the unit number
+        Dictionary<int, int> units = new Dictionary<int, int>();
+        if (currentStage >= 3)
+        {
+            int tempStage = currentStage;
+            while (tempStage % 3 != 0)
+            {
+                tempStage++;
+            }
+            int breakingPoint1 = tempStage / 3;
+            int breakingPoint2 = 2 * breakingPoint1;
+            // Method 1: One range will have a probaility 3/6, the other will have 2/6 and the last will have 1/6
+            // Don't let the highest cost range have the greatest probability (ints 1-2 instead of 1-3)
+            int highestRange = Random.Range(1, 3);
+            int lowestRange = highestRange;
+            while (lowestRange == highestRange)
+            {
+                lowestRange = Random.Range(1, 4);
+            }
+            //print(name + "high: " + highestRange + ", low: " + lowestRange);
+            switch (highestRange)
+            {
+                case 1:
+                    units.Add(4, Random.Range(0, breakingPoint1));
+                    break;
+                case 2:
+                    units.Add(4, Random.Range(breakingPoint1, breakingPoint2));
+                    break;
+                case 3:
+                    units.Add(4, Random.Range(breakingPoint2, currentStage));
+                    break;
+            }
+            // different combinations for highest and lowest ranges: 1+2 = 2+1 = 3, 1+3 = 3+1 = 4, 2+3 = 3+2 = 5
+            switch (highestRange + lowestRange)
+            {
+                case 5:
+                    units.Add(2, Random.Range(0, breakingPoint1));
+                    break;
+                case 4:
+                    units.Add(2, Random.Range(breakingPoint1, breakingPoint2));
+                    break;
+                case 3:
+                    units.Add(2, Random.Range(breakingPoint2, currentStage));
+                    break;
+            }
+            switch (lowestRange)
+            {
+                case 1:
+                    units.Add(1, Random.Range(0, breakingPoint1));
+                    break;
+                case 2:
+                    units.Add(1, Random.Range(breakingPoint1, breakingPoint2));
+                    break;
+                case 3:
+                    units.Add(1, Random.Range(breakingPoint2, currentStage));
+                    break;
+            }
+        }
+        else if (currentStage == 2)
+        {
+            switch (Random.Range(0, 2))
+            {
+                case 0:
+                    units.Add(3, 0);
+                    units.Add(1, 1);
+                    break;
+                case 1:
+                    units.Add(1, 0);
+                    units.Add(3, 1);
+                    break;
+            }
+        }
+        else
+        {
+            units.Add(1, 0);
+        }
+        /*foreach (int i in units.Keys)
+        {
+            print(name + ": " + i + ", " + units[i]);
+        }*/
+        return units;
+    }
     // can only have 0-1 parameter (otherwise it won't show in options for OnClick() in inspector)
     public void DoButtonAction(GameObject obj)
     {
@@ -341,9 +425,30 @@ public class ButtonAction : MonoBehaviour
     {
         for (int i = 0; i < unitButtonList.Length; i++)
         {
-            int newUnitIndex = GenerateRandomUnit();// Random.Range(0, spawnableObjectsAmount);
+            /*int newUnitIndex = GenerateRandomUnit();// Random.Range(0, spawnableObjectsAmount);
             unitButtonList[i].transform.GetChild(0).GetComponent<Text>().text = "Unit " + (newUnitIndex + 1);
             unitButtonList[i].GetComponent<ButtonClick>().SetUnitIndex(newUnitIndex);
+            unitButtonList[i].SetActive(true);*/
+
+            Dictionary<int, int> unitProbabilities = GenerateRandomUnits();
+            float random = Random.Range(1, 7);
+            int newUnitIndex = -10;
+            foreach (KeyValuePair<int, int> kv in unitProbabilities)
+            {
+                if (random >= kv.Key)
+                {
+                    newUnitIndex = kv.Value;
+                    break;
+                }
+            }
+            if (newUnitIndex == -10)
+            {
+                print(name + ": Unable to set new unit index");
+                newUnitIndex = GenerateRandomUnit();
+            }
+            unitButtonList[i].transform.GetChild(0).GetComponent<Text>().text = "Unit " + (newUnitIndex + 1);
+            unitButtonList[i].GetComponent<ButtonClick>().SetUnitIndex(newUnitIndex);
+            unitButtonList[i].GetComponent<ButtonClick>().unitProbabilities = unitProbabilities;
             unitButtonList[i].SetActive(true);
         }
     }
@@ -385,6 +490,22 @@ public class ButtonAction : MonoBehaviour
     {
         //unitProbabilitiesPopUp.transform.position = button.transform.position;
         unitProbabilitiesPopUp.SetActive(true);
+        int index = 0;
+        foreach (KeyValuePair<int, int> kv in button.GetComponent<ButtonClick>().unitProbabilities)
+        {
+            if (button.GetComponent<ButtonClick>().unitProbabilities.Count == 3 && kv.Key == 4)
+                unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "Unit " + (kv.Value + 1) + " = " + (kv.Key - 1) + "/" + 6.0f;
+            else if (button.GetComponent<ButtonClick>().unitProbabilities.Count == 3)
+                unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "Unit " + (kv.Value + 1) + " = " + kv.Key + "/" + 6.0f;
+            else if (button.GetComponent<ButtonClick>().unitProbabilities.Count == 2)
+                unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "Unit " + (kv.Value + 1) + " = " + (kv.Key + 1) + "/" + 6.0f;
+            else
+                unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "Unit " + (kv.Value + 1) + " = " + (7 - kv.Key) + "/" + 6.0f;
+        }
+        while (index < 3)
+        {
+            unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "NULL";
+        }
         mouseIsOverButton = true;
     }
     public void QuitGame()
