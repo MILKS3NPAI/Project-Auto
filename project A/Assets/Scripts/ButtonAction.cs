@@ -13,6 +13,7 @@ public class ButtonAction : MonoBehaviour
     [SerializeField] float horizontalButtonOffset;
     [SerializeField] GameObject unitButton, spawnedUnitsParent, tempTierButton;
     [SerializeField] GameObject tileMapObject;
+    [SerializeField] GameObject unitProbabilitiesPopUp;
     [SerializeField] Vector3 lowerLeftPosition;
     private const float SPAWN_POS_Y = 1;
     private const int TEMP_MAXIMUM_UNITS = 9;
@@ -56,9 +57,14 @@ public class ButtonAction : MonoBehaviour
     }
     private void Update()
     {
+        int offset = 0;
         for (int i = 0; i < transform.childCount; i++)
         {
-            transform.GetChild(i).transform.localPosition = lowerLeftPosition + Vector3.right * horizontalButtonOffset * i;
+            if (transform.GetChild(i).GetComponent<Button>())
+            {
+                transform.GetChild(i).transform.localPosition = lowerLeftPosition + Vector3.right * horizontalButtonOffset * offset;
+                offset++;
+            }
         }
         for (int i = 0; i < spawnableObjectsAmount; i++)
         {
@@ -372,7 +378,14 @@ public class ButtonAction : MonoBehaviour
     }
     public void OnPointerExit()
     {
+        unitProbabilitiesPopUp.SetActive(false);
         mouseIsOverButton = false;
+    }
+    public void OnPointerEnterUnit(GameObject button)
+    {
+        //unitProbabilitiesPopUp.transform.position = button.transform.position;
+        unitProbabilitiesPopUp.SetActive(true);
+        mouseIsOverButton = true;
     }
     public void QuitGame()
     {
