@@ -54,6 +54,7 @@ public class ButtonAction : MonoBehaviour
                 }
             }
         }
+        RefreshUnitButtons();
     }
     private void Update()
     {
@@ -375,6 +376,7 @@ public class ButtonAction : MonoBehaviour
                 case 4: // temporary random tier generator, for spawning different units with different probabilities
                     currentStage = Random.Range(1, TEMP_MAXIMUM_UNITS + 1); //spawnableObjectsAmount
                     obj.transform.GetChild(0).GetComponent<Text>().text = "Tier: " + currentStage;
+                    RefreshUnitButtons();
                     break;
                 default:
                     break;
@@ -504,7 +506,7 @@ public class ButtonAction : MonoBehaviour
         }
         while (index < 3)
         {
-            unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "NULL";
+            unitProbabilitiesPopUp.transform.GetChild(index++).GetComponent<Text>().text = "";
         }
         mouseIsOverButton = true;
     }
