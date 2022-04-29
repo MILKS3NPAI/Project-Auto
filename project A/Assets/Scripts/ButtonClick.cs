@@ -23,6 +23,10 @@ public class ButtonClick : MonoBehaviour
         else if(name.ToLower().Contains("unit")){
             buttonAction = 3;
         }
+        else if (name.ToLower().Contains("tier"))
+        {
+            buttonAction = 4;
+        }
     }
     void Update()
     {

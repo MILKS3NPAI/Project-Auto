@@ -11,23 +11,26 @@ public class ButtonAction : MonoBehaviour
     public static bool mouseIsOverButton = false, unitIsSpawning = false;
     public static Dictionary<GameObject, bool> occupiedTiles = new Dictionary<GameObject, bool>();
     [SerializeField] float horizontalButtonOffset;
-    [SerializeField] GameObject unitButton, spawnedUnitsParent;
+    [SerializeField] GameObject unitButton, spawnedUnitsParent, tempTierButton;
     [SerializeField] GameObject tileMapObject;
     [SerializeField] Vector3 lowerLeftPosition;
     private const float SPAWN_POS_Y = 1;
+    private const int TEMP_MAXIMUM_UNITS = 9;
     private GameObject[] unitButtonList = new GameObject[5]; // the number of units purchasable in the shop
-    private int spawnableObjectsAmount;
+    private int spawnableObjectsAmount, currentStage; // currentTier would be the level or stage number you are at in the game
     private List<GameObject> spawnableObjects;
     private List<GameObject> possibleTileObjects = new List<GameObject>();
     private void Start()
     {
+        currentStage = 1;
+        tempTierButton.transform.GetChild(0).GetComponent<Text>().text = "Tier: " + currentStage;
         while (spawnableObjects == null || spawnableObjects.Count == 0)
             spawnableObjects = FindAllObjectsInGivenLayer(8); // Interactable layer
         spawnableObjectsAmount = spawnableObjects.Count; // This is the number of "Interactable" objects (to be considered as units)
         for (int i = 0; i < unitButtonList.Length; i++)
         {
             GameObject createdUnitButton = Instantiate(unitButton);
-            int randomUnitIndex = Random.Range(0, spawnableObjectsAmount);
+            int randomUnitIndex = GenerateRandomUnit();//Random.Range(0, spawnableObjectsAmount);
             createdUnitButton.SetActive(true);
             createdUnitButton.name = "Unit Button " + (randomUnitIndex + 1);
             createdUnitButton.transform.parent = transform;
@@ -68,6 +71,54 @@ public class ButtonAction : MonoBehaviour
             //print(name + ": i = " + i + " ");
         }
     }
+    private int GenerateRandomUnit()
+    {
+        int randomUnit;
+        int temp;
+        // for each stage n, the probability of getting units that cost n is 2 / (n + 1), the remaining costs are equally likely
+        switch (currentStage)
+        {
+            case 1:
+                randomUnit = 1;
+                break;
+            case 2:
+                temp = Random.Range(1, 4);
+                randomUnit = temp >= 2 ? 2 : 1;
+                break;
+            case 3:
+                temp = Random.Range(1, 5);
+                randomUnit = temp >= 3 ? 3 : temp;
+                break;
+            case 4:
+                temp = Random.Range(1, 6);
+                randomUnit = temp >= 4 ? 4 : temp;
+                break;
+            case 5:
+                temp = Random.Range(1, 7);
+                randomUnit = temp >= 5 ? 5 : temp;
+                break;
+            case 6:
+                temp = Random.Range(1, 8);
+                randomUnit = temp >= 6 ? 6 : temp;
+                break;
+            case 7:
+                temp = Random.Range(1, 9);
+                randomUnit = temp >= 7 ? 7 : temp;
+                break;
+            case 8:
+                temp = Random.Range(1, 10);
+                randomUnit = temp >= 8 ? 8 : temp;
+                break;
+            case 9:
+                temp = Random.Range(1, 11);
+                randomUnit = temp >= 9 ? 9 : temp;
+                break;
+            default:
+                randomUnit = 1;
+                break;
+        }
+        return randomUnit - 1;
+    }
     // can only have 0-1 parameter (otherwise it won't show in options for OnClick() in inspector)
     public void DoButtonAction(GameObject obj)
     {
@@ -86,6 +137,10 @@ public class ButtonAction : MonoBehaviour
                     mouseIsOverButton = false;
                     SpawnUnit(obj.GetComponent<ButtonClick>().GetUnitIndex());
                     break;
+                case 4: // temporary random tier generator, for spawning different units with different probabilities
+                    currentStage = Random.Range(1, TEMP_MAXIMUM_UNITS + 1); //spawnableObjectsAmount
+                    obj.transform.GetChild(0).GetComponent<Text>().text = "Tier: " + currentStage;
+                    break;
                 default:
                     break;
             }
@@ -95,7 +150,11 @@ public class ButtonAction : MonoBehaviour
     {
         //GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]); //Instantiate(spawnableObjects[Random.Range(0, spawnableObjects.Count)]);
         Vector3 spawnedPosition = FindNextAvailableTile();
-        if (!(spawnedPosition.x == Mathf.NegativeInfinity || spawnedPosition.y == Mathf.NegativeInfinity || spawnedPosition.z == Mathf.NegativeInfinity) && !unitIsSpawning)
+        if (unitIndex >= spawnableObjectsAmount)
+        {
+            print(name + ": Cannot spawn unit: Index out of bounds");
+        }
+        else if (!(spawnedPosition.x == Mathf.NegativeInfinity || spawnedPosition.y == Mathf.NegativeInfinity || spawnedPosition.z == Mathf.NegativeInfinity) && !unitIsSpawning)
         {
             unitIsSpawning = true;
             GameObject spawnedObj = Instantiate(spawnableObjects[unitIndex]);
@@ -104,7 +163,7 @@ public class ButtonAction : MonoBehaviour
         }
         else
         {
-            print(name + ": Cannot spawn unit");
+            print(name + ": Cannot spawn unit: Not enough space");
             //spawnedObj.transform.position = new Vector3(1.6f, SPAWN_POS_Y, 2.07f);
         }
     }
@@ -131,7 +190,7 @@ public class ButtonAction : MonoBehaviour
     {
         for (int i = 0; i < unitButtonList.Length; i++)
         {
-            int newUnitIndex = Random.Range(0, spawnableObjectsAmount);
+            int newUnitIndex = GenerateRandomUnit();// Random.Range(0, spawnableObjectsAmount);
             unitButtonList[i].transform.GetChild(0).GetComponent<Text>().text = "Unit " + (newUnitIndex + 1);
             unitButtonList[i].GetComponent<ButtonClick>().SetUnitIndex(newUnitIndex);
             unitButtonList[i].SetActive(true);
